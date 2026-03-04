@@ -7,23 +7,24 @@ import java.util.List;
 import com.github.vmssilva.csvparser.config.CsvConfig;
 import com.github.vmssilva.csvparser.model.CsvDocument;
 import com.github.vmssilva.csvparser.model.CsvRow;
+import com.github.vmssilva.csvparser.model.Document;
 import com.github.vmssilva.csvparser.model.Row;
 
 public class CsvParser {
 
-  public CsvDocument parse(InputStream inputStream) {
+  public Document parse(InputStream inputStream) {
     return null;
   }
 
-  public CsvDocument parse(InputStream inputStream, CsvConfig config) {
+  public Document parse(InputStream inputStream, CsvConfig config) {
     return null;
   }
 
-  public CsvDocument parse(String csv) {
+  public Document parse(String csv) {
     return parse(csv, new CsvConfig());
   }
 
-  public CsvDocument parse(String csv, CsvConfig config) {
+  public Document parse(String csv, CsvConfig config) {
     List<Row> rows = new ArrayList<>();
     List<String> cols = new ArrayList<>();
     StringBuilder value = new StringBuilder();
