@@ -22,7 +22,8 @@ public record CsvRow(List<String> values) implements Row {
   @Override
   public String getString(int index) {
     if (index < 0 || index >= size())
-      throw new CsvParseException("Index out of bound");
+      throw new CsvParseException(
+          "Index " + index + " is out of bounds for row of size " + size());
 
     return values.get(index);
   }
@@ -56,8 +57,9 @@ public record CsvRow(List<String> values) implements Row {
   public Character getChar(int index) {
     String value = getString(index);
 
-    if (value.length() > 1)
-      throw new CsvParseException("value must be a valid char");
+    if (value.length() != 1)
+      throw new CsvParseException(
+          "Expected a single character at index " + index + " but found \"" + value + "\"");
 
     return getString(index).charAt(0);
   }
@@ -68,8 +70,7 @@ public record CsvRow(List<String> values) implements Row {
     String value = getString(index).toLowerCase();
     return switch (value) {
       case "y", "yes", "1", "true" -> true;
-      case "n", "no", "0", "false" -> false;
-      default -> throw new CsvParseException("value must be a valid boolean");
+      default -> false;
     };
   }
 }
