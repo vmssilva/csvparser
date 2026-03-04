@@ -11,9 +11,50 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 record FakeRow(List<String> values) implements Row {
+
+  @Override
+  public List<Integer> keys() {
+    return List.of();
+  }
+
   @Override
   public String getString(int index) {
-    return null;
+    return values.get(index);
+  }
+
+  @Override
+  public int size() {
+    return values.size();
+  }
+
+  @Override
+  public Integer getInt(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Float getFloat(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Double getDouble(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Long getLong(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Character getChar(int index) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Boolean getBoolean(int index) {
+    throw new UnsupportedOperationException();
   }
 }
 
@@ -28,7 +69,7 @@ class CsvDocumentTest {
 
     rows = List.of(
         new FakeRow(List.of("Name", "Category")),
-        new FakeRow(List.of("Smartphone", "Electroics")));
+        new FakeRow(List.of("Smartphone", "Electronics")));
 
     doc = new CsvDocument(rows, true);
     assertEquals(Optional.of(new FakeRow(List.of("Name", "Category"))), doc.getHeader());
@@ -52,7 +93,7 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should that return all rows")
+  @DisplayName("Should return all rows")
   void testGetAllElements() {
 
     rows = List.of(
@@ -81,7 +122,7 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should return an Optional.empty() If an index is out of bounds")
+  @DisplayName("Should return an Optional.empty() if an index is out of bounds")
   void testGetRowByIndexWithAnInvalidIndex() {
     rows = List.of(
         new FakeRow(List.of("Name", "Category")),
@@ -99,7 +140,7 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should throws NullPointerException if the rows is null")
+  @DisplayName("Should throw NullPointerException if rows are null")
   void testConstructorWithNullValue() {
     assertThrows(NullPointerException.class, () -> new CsvDocument(null, false));
     assertThrows(NullPointerException.class, () -> new CsvDocument(null, true));
