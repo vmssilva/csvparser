@@ -5,7 +5,7 @@ public class CsvConfig {
   private char delimiter = ',';
   private char quoteCharacter = '"';
   private boolean hasHeader = false;
-  private char lineBreakCharacter = '\n';
+  private char newLineCharacter = '\n';
 
   public char getDelimiter() {
     return delimiter;
@@ -31,11 +31,11 @@ public class CsvConfig {
     this.hasHeader = hasHeader;
   }
 
-  public void setLineBreakCharacter(char lineBreakCharacter) {
-    this.lineBreakCharacter = lineBreakCharacter;
+  public void setNewLineCharacter(char newLineCharacter) {
+    this.newLineCharacter = newLineCharacter;
   }
 
-  public char getLineBreakCharacter() {
-    return lineBreakCharacter;
+  public char getNewLineCharacter() {
+    return newLineCharacter;
   }
 }

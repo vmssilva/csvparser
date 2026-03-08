@@ -60,18 +60,15 @@ record FakeRow(List<String> values) implements Row {
 
 class CsvDocumentTest {
 
-  Document doc;
-  List<Row> rows;
-
   @Test
   @DisplayName("Should return header correctly")
-  void testGetHeader() {
+  void shouldReturnHeader() {
 
-    rows = List.of(
+    List<Row> rows = List.of(
         new FakeRow(List.of("Name", "Category")),
         new FakeRow(List.of("Smartphone", "Electronics")));
 
-    doc = new CsvDocument(rows, true);
+    CsvDocument doc = new CsvDocument(rows, true);
     assertEquals(Optional.of(new FakeRow(List.of("Name", "Category"))), doc.getHeader());
 
     doc = new CsvDocument(rows, false);
@@ -79,13 +76,13 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should return total of rows correctly")
-  void testTotalOfElements() {
-    rows = List.of(
+  @DisplayName("Should return correct number of rows")
+  void shouldReturnCorrectRowCount() {
+    List<Row> rows = List.of(
         new FakeRow(List.of("Name", "Category")),
         new FakeRow(List.of("Smartphone", "Electronics")));
 
-    doc = new CsvDocument(rows, false);
+    CsvDocument doc = new CsvDocument(rows, false);
     assertEquals(2, doc.size());
 
     doc = new CsvDocument(rows, true);
@@ -94,9 +91,9 @@ class CsvDocumentTest {
 
   @Test
   @DisplayName("Should return all rows")
-  void testGetAllElements() {
+  void shouldReturnAllRow() {
 
-    rows = List.of(
+    List<Row> rows = List.of(
         new FakeRow(List.of("Name", "Category")),
         new FakeRow(List.of("Smartphone", "Electronics")));
 
@@ -106,14 +103,14 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should return correct row")
-  void testGetRowByIndex() {
+  @DisplayName("SShould return the correct row by index")
+  void shouldReturnRowByIndex() {
 
-    rows = List.of(
+    List<Row> rows = List.of(
         new FakeRow(List.of("Name", "Category")),
         new FakeRow(List.of("Smartphone", "Electronics")));
 
-    doc = new CsvDocument(rows, false);
+    CsvDocument doc = new CsvDocument(rows, false);
     assertEquals(Optional.of(new FakeRow(List.of("Name", "Category"))), doc.getRow(0));
     assertEquals(Optional.of(new FakeRow(List.of("Smartphone", "Electronics"))), doc.getRow(1));
 
@@ -122,13 +119,13 @@ class CsvDocumentTest {
   }
 
   @Test
-  @DisplayName("Should return an Optional.empty() if an index is out of bounds")
-  void testGetRowByIndexWithAnInvalidIndex() {
-    rows = List.of(
+  @DisplayName("Should return Optional.empty() when index is out of bounds")
+  void tshouldReturnEmptyOptionalWhenIndexIsInvalid() {
+    List<Row> rows = List.of(
         new FakeRow(List.of("Name", "Category")),
         new FakeRow(List.of("Smartphone", "Electronics")));
 
-    doc = new CsvDocument(rows, false);
+    CsvDocument doc = new CsvDocument(rows, false);
 
     assertEquals(Optional.empty(), doc.getRow(-1));
     assertEquals(Optional.empty(), doc.getRow(2));
@@ -141,9 +138,32 @@ class CsvDocumentTest {
 
   @Test
   @DisplayName("Should throw NullPointerException if rows are null")
-  void testConstructorWithNullValue() {
+  void shouldThrowExceptionWhenRowsAreNull() {
     assertThrows(NullPointerException.class, () -> new CsvDocument(null, false));
     assertThrows(NullPointerException.class, () -> new CsvDocument(null, true));
+  }
+
+  @Test
+  void shouldHandleEmptyDocument() {
+
+    CsvDocument doc = new CsvDocument(List.of(), false);
+
+    assertEquals(0, doc.size());
+    assertEquals(List.of(), doc.rows());
+    assertEquals(Optional.empty(), doc.getHeader());
+    assertEquals(Optional.empty(), doc.getRow(0));
+  }
+
+  @Test
+  void shouldHandleDocumentWithOnlyHeader() {
+
+    List<Row> rows = List.of(
+        new FakeRow(List.of("Name", "Category")));
+
+    CsvDocument doc = new CsvDocument(rows, true);
+
+    assertEquals(0, doc.size());
+    assertEquals(Optional.of(rows.get(0)), doc.getHeader());
   }
 
 }

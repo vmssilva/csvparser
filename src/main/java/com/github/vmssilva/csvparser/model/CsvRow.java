@@ -3,7 +3,6 @@ package com.github.vmssilva.csvparser.model;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.github.vmssilva.csvparser.exception.CsvParseException;
@@ -11,12 +10,12 @@ import com.github.vmssilva.csvparser.exception.CsvParseException;
 public record CsvRow(List<String> values) implements Row {
 
   public CsvRow(List<String> values) {
-    this.values = requireNonNull(values);
+    this.values = List.copyOf(requireNonNull(values));
   }
 
   @Override
   public List<Integer> keys() {
-    return IntStream.range(0, values.size()).boxed().collect(Collectors.toList());
+    return IntStream.range(0, values.size()).boxed().toList();
   }
 
   @Override
@@ -61,7 +60,7 @@ public record CsvRow(List<String> values) implements Row {
       throw new CsvParseException(
           "Expected a single character at index " + index + " but found \"" + value + "\"");
 
-    return getString(index).charAt(0);
+    return value.charAt(0);
   }
 
   @Override
@@ -70,7 +69,8 @@ public record CsvRow(List<String> values) implements Row {
     String value = getString(index).toLowerCase();
     return switch (value) {
       case "y", "yes", "1", "true" -> true;
-      default -> false;
+      case "n", "no", "0", "false" -> false;
+      default -> throw new CsvParseException("Invalid boolean value: '" + value + "'");
     };
   }
 }
