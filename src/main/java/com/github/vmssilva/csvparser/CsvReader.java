@@ -8,6 +8,6 @@ import com.github.vmssilva.csvparser.model.CsvDocument;
 public class CsvReader {
 
   public CsvDocument read(File file) throws IOException {
-    return null;
+    throw new UnsupportedOperationException("Method read(File) not implemented yet");
   }
 }

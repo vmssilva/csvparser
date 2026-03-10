@@ -17,6 +17,7 @@ import com.github.vmssilva.csvparser.model.CsvDocument;
 public class CsvParserTest {
 
   @Test
+  @DisplayName("Should be able to parse with empty line")
   void shouldHandleEmptyCsv() {
     CsvDocument doc = parse("");
 
@@ -25,6 +26,7 @@ public class CsvParserTest {
   }
 
   @Test
+  @DisplayName("Should be able to parse with only header")
   void shouldHandleCsvWithOnlyHeader() {
     CsvConfig config = new CsvConfig();
     config.setHasHeader(true);
@@ -37,7 +39,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with single line")
-  void testParserWithSingleLine() {
+  void shouldBeParseWithSingleLine() {
     var csv = "Id,Name,Position,Salary";
     CsvDocument doc = parse(csv);
     assertEquals(List.of("Id", "Name", "Position", "Salary"), doc.rows().get(0).values());
@@ -46,7 +48,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with multiple lines")
-  void testParserWithMultiplesLines() {
+  void shouldBeParseWithMultiplesLines() {
     var csv = """
         Id,Name,Position,Salary
         1,John Doe,Java Developer,5000.00""";
@@ -62,7 +64,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with quotes at the start")
-  void testParserWithQuotesAtTheStart() {
+  void shouldBeParseWithQuotesAtTheStart() {
 
     var csv = "\"Id,Name\",Category";
 
@@ -74,7 +76,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with quotes at the middle")
-  void testParserWithQuotesAtTheMiddle() {
+  void shouldBeParseWithQuotesAtTheMiddle() {
 
     var expected = List.of("Id", "Name,Category", "Price");
     CsvDocument doc = parse("Id,\"Name,Category\",Price");
@@ -84,7 +86,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with quotes at the end")
-  void testParserWithQuotesAtTheEnd() {
+  void shoulBeParseWithQuotesAtTheEnd() {
     var expected = List.of("Id", "Name", "Category,Price");
     CsvDocument doc = parse("Id,Name,\"Category,Price\"");
     assertEquals(expected, doc.rows().get(0).values());
@@ -92,7 +94,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse a csv with multiple quotes")
-  void testParserWithQuotesInMultipleLines() {
+  void shouldBeParseWithQuotesInMultipleLines() {
     var expected = List.of(
         List.of("Id", "Name", "Category", "Price"),
         List.of("1", "Smartphone, Samsung Galaxy, S22", "Electronics", "399.90"));
@@ -103,7 +105,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse csv with escapes characters")
-  void testParserWithEscapesCharacters() {
+  void shouldBeParseWithEscapesCharacters() {
 
     var csv = "Id,Name \\\"Description\\\",Price";
     var expected = List.of("Id", "Name \"Description\"", "Price");
@@ -115,7 +117,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse csv with multiple escape characters")
-  void testParserWithMultiplesEscapesCharacters() {
+  void shouldBeParseWithMultiplesEscapesCharacters() {
 
     var csv = "1,Smartphone \\\\Samsung \\\"refurbished\\\",Electronics,50.00";
     var expected = List.of("1", "Smartphone \\Samsung \"refurbished\"", "Electronics", "50.00");
@@ -126,7 +128,7 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should be able to parse csv with unicode escape characters")
-  void testParserWithUnicodeCharacter() {
+  void shouldBeParseWithUnicodeCharacter() {
 
     var csv = "1,Smartphone Samsung,Electronics,\\u20AC50.00"; // Euro sign
     var expected = List.of("1", "Smartphone Samsung", "Electronics", "\u20AC50.00");
@@ -136,17 +138,16 @@ public class CsvParserTest {
 
   @Test
   @DisplayName("Should throw CsvParseException for invalid escape characters")
-  void testParseWithInvalidEscapeCharacters() {
+  void shouldThrowExceptionForWithInvalidEscapeCharacters() {
     Throwable t = assertThrows(CsvParseException.class, () -> parse("\\u002x").rows().get(0).values());
     assertTrue(t.getMessage().contains("Invalid unicode character"));
   }
 
   @Test
-  @DisplayName("Should throw CsvParseException for unclosed strings")
-  void testParseWithUnclosedQuotes() {
-
+  @DisplayName("Should throw CsvParseException for unterminated strings")
+  void shouldThrowExcetpionForUnterminatedStrings() {
     Throwable t = assertThrows(CsvParseException.class, () -> parse("Id,\"Name,Price"));
-    assertTrue(t.getMessage().contains("Unclosed string"));
+    assertTrue(t.getMessage().contains("Unterminated string"));
   }
 
   private CsvDocument parse(String csv) {

@@ -29,7 +29,7 @@ public class CsvParser {
   }
 
   public CsvDocument parse(InputStream inputStream) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    throw new UnsupportedOperationException("Method parse(InputStream) not implemented yet");
   }
 
   public CsvDocument parse(String source) {
@@ -119,7 +119,7 @@ public class CsvParser {
     }
 
     if (inQuotes)
-      throw new CsvParseException("Unclosed string at index: " + started);
+      throw new CsvParseException("Unterminated string at index: " + started);
 
     return false;
   }
@@ -147,7 +147,7 @@ public class CsvParser {
         int end = begin + 4;
 
         if (end > csv.length())
-          throw new CsvParseException("Invalid unicode character EOF");
+          throw new CsvParseException("Invalid unicode character \\'" + escaped + "' found at index: " + current);
 
         String unicodeStr = csv.substring(begin, end);
 
@@ -158,7 +158,7 @@ public class CsvParser {
           current += (end - begin);
 
         } catch (Exception e) {
-          throw new CsvParseException("Invalid unicode character '\\u" + unicodeStr + "'");
+          throw new CsvParseException("Invalid unicode character '\\u" + unicodeStr + "' found at index: " + current);
         }
       }
       default ->

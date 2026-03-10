@@ -150,7 +150,7 @@ try {
 Each row allows convenient access to typed values:
 
 ```java
-CsvRow row = doc.rows().get(0);
+CsvRow row = (CsvRow) doc.rows().get(0);
 
 int id = row.getInt(0);
 String name = row.getString(1);

@@ -12,16 +12,16 @@ public interface Row {
 
   int size();
 
-  Integer getInt(int index);
+  // Integer getInt(int index);
 
-  Float getFloat(int index);
+  // Float getFloat(int index);
 
-  Double getDouble(int index);
+  // Double getDouble(int index);
 
-  Long getLong(int index);
+  // Long getLong(int index);
 
-  Character getChar(int index);
+  // Character getChar(int index);
 
-  Boolean getBoolean(int index);
+  // Boolean getBoolean(int index);
 
 }

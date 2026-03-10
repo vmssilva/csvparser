@@ -1,13 +1,19 @@
 package com.github.vmssilva.csvparser.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import java.util.List;
 
-import com.github.vmssilva.csvparser.exception.CsvParseException;
+import com.github.vmssilva.csvparser.exception.CsvRowException;
 
 public class CsvRowTest {
 
@@ -36,11 +42,11 @@ public class CsvRowTest {
   }
 
   @Test
-  @DisplayName("Should throw a CSVParseException for invalid index")
+  @DisplayName("Should throw a CsvRowException for invalid index")
   void testGetValueWithAnInvalidIndex() {
     CsvRow row = new CsvRow(List.of("1", "Galaxy X1 Smartphone", "Electronics", "1499.90"));
-    assertThrows(CsvParseException.class, () -> row.getString(5));
-    assertThrows(CsvParseException.class, () -> row.getString(-1));
+    assertThrows(CsvRowException.class, () -> row.getString(5));
+    assertThrows(CsvRowException.class, () -> row.getString(-1));
   }
 
   @Test
@@ -51,10 +57,10 @@ public class CsvRowTest {
   }
 
   @Test
-  @DisplayName("Should throw CsvParseException for invalid char")
+  @DisplayName("Should throw CsvRowException for invalid char")
   void testGetAnInvalidChar() {
     CsvRow row = new CsvRow(List.of("char"));
-    assertThrows(CsvParseException.class, () -> row.getChar(0));
+    assertThrows(CsvRowException.class, () -> row.getChar(0));
   }
 
   @Test
@@ -110,10 +116,10 @@ public class CsvRowTest {
 
   @ParameterizedTest
   @ValueSource(strings = { "", " ", "banana" })
-  @DisplayName("Should throws CsvParseException for unrecongnized boolean values")
+  @DisplayName("Should throws CsvRowException for unrecongnized boolean values")
   void shouldThrowExceptionForInvalidBoolean(String input) {
     CsvRow row = new CsvRow(List.of(input));
-    assertThrows(CsvParseException.class, () -> row.getBoolean(0));
+    assertThrows(CsvRowException.class, () -> row.getBoolean(0));
   }
 
   @Test

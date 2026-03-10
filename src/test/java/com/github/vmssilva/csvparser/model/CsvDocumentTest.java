@@ -27,35 +27,6 @@ record FakeRow(List<String> values) implements Row {
     return values.size();
   }
 
-  @Override
-  public Integer getInt(int index) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Float getFloat(int index) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Double getDouble(int index) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Long getLong(int index) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Character getChar(int index) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Boolean getBoolean(int index) {
-    throw new UnsupportedOperationException();
-  }
 }
 
 class CsvDocumentTest {

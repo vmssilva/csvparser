@@ -1,5 +1,6 @@
 package com.github.vmssilva.csvparser.model;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,4 +42,28 @@ public record CsvDocument(List<Row> rows, boolean hasHeader) {
     return hasHeader ? 1 : 0;
   }
 
+  public CsvDocumentIterator iterator() {
+    return new CsvDocumentIterator(rows());
+  }
+
+  public static class CsvDocumentIterator implements Iterator<Row> {
+
+    private final List<Row> rows;
+    private int pos;
+
+    public CsvDocumentIterator(List<Row> rows) {
+      this.rows = rows;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return pos < this.rows.size();
+    }
+
+    @Override
+    public Row next() {
+      return this.rows.get(pos++);
+    }
+
+  }
 }
